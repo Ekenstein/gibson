@@ -35,7 +35,7 @@ private fun GibColor.flip() = when (this) {
 }
 
 fun Gib.getMoves(): List<Move> {
-    val startingColor = if (getHandicap() >= 2) GibColor.White else GibColor.Black
+    val startingColor = if (handicap >= 2) GibColor.White else GibColor.Black
     fun colorFromMoveNumber(moveNumber: Int) = when (moveNumber % 2) {
         0 -> startingColor.flip()
         else -> startingColor

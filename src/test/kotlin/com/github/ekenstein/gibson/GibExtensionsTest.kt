@@ -12,19 +12,19 @@ class GibExtensionsTest {
             {
                 val gib = Gib(emptyMap(), listOf(GameProperty.SKI(1)))
                 val expected = listOf(Move.Pass(GibColor.Black, 1))
-                val actual = gib.getMoves()
+                val actual = gib.moves
                 assertEquals(expected, actual)
             },
             {
                 val gib = Gib(emptyMap(), listOf(GameProperty.INI(2), GameProperty.SKI(1)))
                 val expected = listOf(Move.Pass(GibColor.White, 1))
-                val actual = gib.getMoves()
+                val actual = gib.moves
                 assertEquals(expected, actual)
             },
             {
                 val gib = Gib(emptyMap(), listOf(GameProperty.SKI(1), GameProperty.SKI(2)))
                 val expected = listOf(Move.Pass(GibColor.Black, 1), Move.Pass(GibColor.White, 2))
-                val actual = gib.getMoves()
+                val actual = gib.moves
                 assertEquals(expected, actual)
             }
         )
@@ -35,12 +35,12 @@ class GibExtensionsTest {
         assertAll(
             {
                 val gib = Gib(mapOf("GAMEWHITENAME" to "Test"), emptyList())
-                val actual = gib.getPlayerWhite()
+                val actual = gib.playerWhite
                 assertEquals("Test", actual)
             },
             {
                 val gib = Gib(emptyMap(), emptyList())
-                val actual = gib.getPlayerWhite()
+                val actual = gib.playerWhite
                 assertNull(actual)
             }
         )
@@ -51,12 +51,12 @@ class GibExtensionsTest {
         assertAll(
             {
                 val gib = Gib(mapOf("GAMEBLACKNAME" to "Test"), emptyList())
-                val actual = gib.getPlayerBlack()
+                val actual = gib.playerBlack
                 assertEquals("Test", actual)
             },
             {
                 val gib = Gib(emptyMap(), emptyList())
-                val actual = gib.getPlayerBlack()
+                val actual = gib.playerBlack
                 assertNull(actual)
             }
         )
@@ -67,12 +67,12 @@ class GibExtensionsTest {
         assertAll(
             {
                 val gib = Gib(mapOf("GAMEPLACE" to "Test"), emptyList())
-                val actual = gib.getGamePlace()
+                val actual = gib.gamePlace
                 assertEquals("Test", actual)
             },
             {
                 val gib = Gib(emptyMap(), emptyList())
-                val actual = gib.getGamePlace()
+                val actual = gib.gamePlace
                 assertNull(actual)
             }
         )
@@ -83,12 +83,12 @@ class GibExtensionsTest {
         assertAll(
             {
                 val gib = Gib(mapOf("GAMEGONGJE" to "65"), emptyList())
-                val actual = gib.getKomi()
+                val actual = gib.komi
                 assertEquals(6.5, actual)
             },
             {
                 val gib = Gib(emptyMap(), emptyList())
-                val actual = gib.getKomi()
+                val actual = gib.komi
                 assertNull(actual)
             }
         )
@@ -99,12 +99,12 @@ class GibExtensionsTest {
         assertAll(
             {
                 val gib = Gib(emptyMap(), listOf(GameProperty.INI(8)))
-                val actual = gib.getHandicap()
+                val actual = gib.handicap
                 assertEquals(8, actual)
             },
             {
                 val gib = Gib(emptyMap(), emptyList())
-                val actual = gib.getHandicap()
+                val actual = gib.handicap
                 assertEquals(0, actual)
             }
         )
@@ -121,7 +121,7 @@ class GibExtensionsTest {
                     ),
                     emptyList()
                 )
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 val expected = GameResult.Score(GibColor.Black, 24.5)
                 assertEquals(expected, actual)
             },
@@ -132,7 +132,7 @@ class GibExtensionsTest {
                     ),
                     emptyList()
                 )
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 val expected = GameResult.Score(GibColor.Black, 0.0)
                 assertEquals(expected, actual)
             },
@@ -144,7 +144,7 @@ class GibExtensionsTest {
                     ),
                     emptyList()
                 )
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 val expected = GameResult.Score(GibColor.White, 24.5)
                 assertEquals(expected, actual)
             },
@@ -155,7 +155,7 @@ class GibExtensionsTest {
                     ),
                     emptyList()
                 )
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 val expected = GameResult.Score(GibColor.White, 0.0)
                 assertEquals(expected, actual)
             },
@@ -166,7 +166,7 @@ class GibExtensionsTest {
                     ),
                     emptyList()
                 )
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 val expected = GameResult.Resignation(GibColor.Black)
                 assertEquals(expected, actual)
             },
@@ -177,7 +177,7 @@ class GibExtensionsTest {
                     ),
                     emptyList()
                 )
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 val expected = GameResult.Resignation(GibColor.White)
                 assertEquals(expected, actual)
             },
@@ -188,7 +188,7 @@ class GibExtensionsTest {
                     ),
                     emptyList()
                 )
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 val expected = GameResult.Time(GibColor.Black)
                 assertEquals(expected, actual)
             },
@@ -199,13 +199,13 @@ class GibExtensionsTest {
                     ),
                     emptyList()
                 )
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 val expected = GameResult.Time(GibColor.White)
                 assertEquals(expected, actual)
             },
             {
                 val gib = Gib(emptyMap(), emptyList())
-                val actual = gib.getGameResult()
+                val actual = gib.gameResult
                 assertNull(actual)
             }
         )

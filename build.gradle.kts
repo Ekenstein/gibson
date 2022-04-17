@@ -4,6 +4,8 @@ import java.nio.file.Paths
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.inputStream
 
+group = "com.github.ekenstein"
+version = "0.1.0"
 val kotlinJvmTarget = "1.8"
 
 plugins {

@@ -17,10 +17,9 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Gradle publish
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: publish
+      - name: Publish to Github Packages
+        run: |
+          ./gradlew publish --stacktrace
         env:
           GITHUB_ACTOR: ${{ secrets.PUBLISH_USER }}
           GITHUB_TOKEN: ${{ secrets.PUBLISH_TOKEN }}

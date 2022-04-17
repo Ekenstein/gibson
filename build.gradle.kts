@@ -11,6 +11,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("com.github.ben-manes.versions") version "0.42.0"
     antlr
+    `maven-publish`
 }
 
 repositories {
@@ -89,6 +90,40 @@ tasks {
 
 ktlint {
     version.set("0.45.2")
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Ekenstein/gibson")
+            credentials {
+                username = System.getenv("PUBLISH_USER")
+                password = System.getenv("PUBLISH_TOKEN")
+            }
+        }
+    }
+
+    publications {
+        create<MavenPublication>("gibson") {
+            groupId = project.group.toString()
+            artifactId = "gibson"
+            version = project.version.toString()
+            from(components["kotlin"])
+
+            pom {
+                name.set("gibson")
+                description.set("Simple GIB parser")
+                url.set("https://github.com/Ekenstein/gibson")
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://github.com/Ekenstein/gibson/blob/main/LICENSE")
+                    }
+                }
+            }
+        }
+    }
 }
 
 class UpgradeToUnstableFilter : com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentFilter {

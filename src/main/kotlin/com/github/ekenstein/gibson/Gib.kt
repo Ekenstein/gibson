@@ -1,9 +1,12 @@
 package com.github.ekenstein.gibson
 
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+
 enum class GibColor { Black, White }
 
 data class Gib(val header: Map<String, String>, val game: List<GameProperty>) {
-    private val gameInfo by lazy {
+    private val gameInfo: Map<String, String> by lazy {
         header["GAMEINFOMAIN"]?.split(",").orEmpty().associate {
             val (name, value) = it.split(":")
             name to value
@@ -56,8 +59,36 @@ data class Gib(val header: Map<String, String>, val game: List<GameProperty>) {
         }
     }
 
+    val gameTime by lazy {
+        gameInfo["GTIME"]?.let { string ->
+            val parts = string.split("-")
+            parts.takeIf { it.size == 3 }?.let { (timeLimit, seconds, stones) ->
+                GameTime(timeLimit.toInt(), seconds.toInt(), stones.toInt())
+            }
+        }
+    }
+
+    val gameDate by lazy {
+        header["GAMEDATE"]?.let { string ->
+            string.split("-").takeIf { it.size == 6 }?.let { parts ->
+                OffsetDateTime.of(
+                    parts[0].trim().toInt(),
+                    parts[1].trim().toInt(),
+                    parts[2].trim().toInt(),
+                    parts[3].trim().toInt(),
+                    parts[4].trim().toInt(),
+                    parts[5].trim().toInt(),
+                    0,
+                    ZoneOffset.UTC
+                )
+            }
+        }
+    }
+
     companion object
 }
+
+data class GameTime(val timeLimit: Int, val overtimeSeconds: Int, val overtimeStones: Int)
 
 sealed class GameProperty {
     data class STO(val moveNumber: Int, val color: GibColor, val x: Int, val y: Int) : GameProperty()

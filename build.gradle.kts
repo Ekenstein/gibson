@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", "1.6.20")
-    antlr("org.antlr", "antlr4", "4.10")
+    antlr("org.antlr", "antlr4", "4.10.1")
 
     testImplementation(kotlin("test"))
 

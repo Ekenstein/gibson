@@ -2,6 +2,10 @@ package com.github.ekenstein.gibson
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -108,6 +112,39 @@ class GibExtensionsTest {
                 assertEquals(0, actual)
             }
         )
+    }
+
+    @Test
+    fun `GAMEDATE contains the date of the game`() {
+        assertAll(
+            {
+                val gib = Gib(mapOf("GAMEDATE" to "2020- 8- 4-11- 7-47"), emptyList())
+                val actual = gib.gameDate
+                val expected = OffsetDateTime.of(
+                    LocalDate.of(2020, 8, 4),
+                    LocalTime.of(11, 7, 47),
+                    ZoneOffset.UTC
+                )
+                assertEquals(expected, actual)
+            },
+            {
+                val gib = Gib(mapOf("GAMEDATE" to "2020- 8-21-22-55- 3"), emptyList())
+                val expected = OffsetDateTime.of(
+                    LocalDate.of(2020, 8, 21),
+                    LocalTime.of(22, 55, 3),
+                    ZoneOffset.UTC
+                )
+                assertEquals(expected, gib.gameDate)
+            }
+        )
+    }
+
+    @Test
+    fun `GTIME contains the time limit of the game`() {
+        val gib = Gib(mapOf("GAMEINFOMAIN" to "GTIME:600-20-3"), emptyList())
+        val actual = gib.gameTime
+        val expected = GameTime(600, 20, 3)
+        assertEquals(expected, actual)
     }
 
     @Test

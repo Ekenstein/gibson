@@ -5,7 +5,7 @@ import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.inputStream
 
 group = "com.github.ekenstein"
-version = "0.1.0"
+version = "0.1.1"
 val kotlinJvmTarget = "1.8"
 
 plugins {

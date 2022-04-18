@@ -40,6 +40,7 @@ publishing {
             artifactId = "gibson"
             version = project.version.toString()
             from(components["kotlin"])
+            artifact(tasks.kotlinSourcesJar)
 
             pom {
                 name.set("gibson")
@@ -75,6 +76,10 @@ tasks {
             .get("build", "generated-src", "antlr", "main", "com", "github", "ekenstein", "gibson", "parser")
             .toFile()
         mustRunAfter("runKtlintCheckOverMainSourceSet")
+    }
+
+    generateTestGrammarSource {
+        mustRunAfter("runKtlintCheckOverTestSourceSet")
     }
 
     compileKotlin {

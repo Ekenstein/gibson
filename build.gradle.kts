@@ -34,17 +34,6 @@ dependencies {
 }
 
 publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Ekenstein/gibson")
-            credentials {
-                username = System.getenv("PUBLISH_USER")
-                password = System.getenv("PUBLISH_TOKEN")
-            }
-        }
-    }
-
     publications {
         create<MavenPublication>("gibson") {
             groupId = project.group.toString()

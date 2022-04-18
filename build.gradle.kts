@@ -33,6 +33,40 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Ekenstein/gibson")
+            credentials {
+                username = System.getenv("PUBLISH_USER")
+                password = System.getenv("PUBLISH_TOKEN")
+            }
+        }
+    }
+
+    publications {
+        create<MavenPublication>("gibson") {
+            groupId = project.group.toString()
+            artifactId = "gibson"
+            version = project.version.toString()
+            from(components["kotlin"])
+
+            pom {
+                name.set("gibson")
+                description.set("Simple GIB parser")
+                url.set("https://github.com/Ekenstein/gibson")
+                licenses {
+                    license {
+                        name.set("MIT")
+                        url.set("https://github.com/Ekenstein/gibson/blob/main/LICENSE")
+                    }
+                }
+            }
+        }
+    }
+}
+
 tasks {
     dependencyUpdates {
         rejectVersionIf(UpgradeToUnstableFilter())
@@ -51,6 +85,7 @@ tasks {
         outputDirectory = Paths
             .get("build", "generated-src", "antlr", "main", "com", "github", "ekenstein", "gibson", "parser")
             .toFile()
+        mustRunAfter("runKtlintCheckOverMainSourceSet")
     }
 
     compileKotlin {
@@ -85,6 +120,10 @@ tasks {
         dependsOn(dependencyUpdateSentinel)
     }
 
+    kotlinSourcesJar {
+        dependsOn("generateGrammarSource")
+    }
+
     test {
         useJUnitPlatform()
     }
@@ -92,40 +131,6 @@ tasks {
 
 ktlint {
     version.set("0.45.2")
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Ekenstein/gibson")
-            credentials {
-                username = System.getenv("PUBLISH_USER")
-                password = System.getenv("PUBLISH_TOKEN")
-            }
-        }
-    }
-
-    publications {
-        create<MavenPublication>("gibson") {
-            groupId = project.group.toString()
-            artifactId = "gibson"
-            version = project.version.toString()
-            from(components["kotlin"])
-
-            pom {
-                name.set("gibson")
-                description.set("Simple GIB parser")
-                url.set("https://github.com/Ekenstein/gibson")
-                licenses {
-                    license {
-                        name.set("MIT")
-                        url.set("https://github.com/Ekenstein/gibson/blob/main/LICENSE")
-                    }
-                }
-            }
-        }
-    }
 }
 
 class UpgradeToUnstableFilter : com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentFilter {

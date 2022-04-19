@@ -4,9 +4,22 @@ A simple, easy-to-use parser for GIB in Kotlin.
 GIB is the file format the Tygem Go Server produces instead of a plain SGF.
 
 ### Usage
-### 1. Obtain a GIB file from the Tygem Go Server
+### 1. Add a dependency on gibson
+For `build.gradle.kts`:
+````kotlin
+repositories {
+    maven {
+        url = uri("https://jitpack.io")
+    }
+}
+
+dependencies {
+    implementation("com.github.Ekenstein:gibson:0.1.2")
+}
+````
+### 2. Obtain a GIB file from the Tygem Go Server
 For examples, see the test [resources](https://github.com/Ekenstein/gibson/tree/main/src/test/resources/games)
-### 2. Write some code
+### 3. Write some code
 ```kotlin
 import com.github.ekenstein.gibson.Gib
 import com.github.ekenstein.gibson.Move

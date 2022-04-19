@@ -9,7 +9,7 @@ version = "0.1.3"
 val kotlinJvmTarget = "1.8"
 
 plugins {
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.6.21"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("com.github.ben-manes.versions") version "0.42.0"
     antlr
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", "1.6.20")
+    implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", "1.6.21")
     antlr("org.antlr", "antlr4", "4.10.1")
 
     testImplementation(kotlin("test"))

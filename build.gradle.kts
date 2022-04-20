@@ -12,6 +12,7 @@ plugins {
     kotlin("jvm") version "1.6.21"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("com.github.ben-manes.versions") version "0.42.0"
+    id("org.jetbrains.dokka") version "1.6.20"
     antlr
     `maven-publish`
 }
@@ -21,16 +22,22 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", "1.6.21")
+    implementation(kotlin("stdlib-jdk8"))
     antlr("org.antlr", "antlr4", "4.10.1")
 
     testImplementation(kotlin("test"))
 
     val junitVersion = "5.8.2"
-
     testImplementation("org.junit.jupiter", "junit-jupiter-params", junitVersion)
     testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
     testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
+}
+
+val dokkaHtml by tasks.getting(org.jetbrains.dokka.gradle.DokkaTask::class)
+val javadocJar: TaskProvider<Jar> by tasks.registering(Jar::class) {
+    dependsOn(dokkaHtml)
+    archiveClassifier.set("javadoc")
+    from(dokkaHtml.outputDirectory)
 }
 
 publishing {
@@ -40,6 +47,7 @@ publishing {
             artifactId = "gibson"
             version = project.version.toString()
             from(components["kotlin"])
+            artifact(javadocJar)
             artifact(tasks.kotlinSourcesJar)
 
             pom {
@@ -76,6 +84,7 @@ tasks {
             .get("build", "generated-src", "antlr", "main", "com", "github", "ekenstein", "gibson", "parser")
             .toFile()
         mustRunAfter("runKtlintCheckOverMainSourceSet")
+        mustRunAfter("dokkaHtml")
     }
 
     generateTestGrammarSource {
@@ -116,6 +125,10 @@ tasks {
 
     kotlinSourcesJar {
         dependsOn("generateGrammarSource")
+    }
+
+    build {
+        dependsOn("javadocJar")
     }
 
     test {

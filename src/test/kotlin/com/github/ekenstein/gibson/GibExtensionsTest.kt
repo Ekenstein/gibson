@@ -142,8 +142,8 @@ class GibExtensionsTest {
     @Test
     fun `GTIME contains the time limit of the game`() {
         val gib = Gib(mapOf("GAMEINFOMAIN" to "GTIME:600-20-3"), emptyList())
-        val actual = gib.gameTime
-        val expected = GameTime(600, 20, 3)
+        val actual = gib.timeSettings
+        val expected = TimeSettings(600, 20, 3)
         assertEquals(expected, actual)
     }
 

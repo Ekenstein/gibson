@@ -19,15 +19,41 @@ private val gibErrorListener = object : BaseErrorListener() {
         offendingSymbol: Any?,
         line: Int,
         charPositionInLine: Int,
-        msg: String?,
+        msg: String,
         e: RecognitionException?
     ) {
-        throw GibParseException(msg, Marker(line, charPositionInLine, line, charPositionInLine))
+        throw GibException.ParseError(msg, Marker(line, charPositionInLine, line, charPositionInLine), e)
     }
 }
 
+/**
+ * Parses the given [string] into [Gib].
+ *
+ * If the [string] does not contain a valid GIB document, a [GibException.ParseError] will be thrown.
+ * @param string The string containing the contents of a GIB file.
+ * @return A structured representation of the GIB document in form of [Gib]
+ * @throws [GibException.ParseError] if the string doesn't contain a valid GIB document.
+ */
 fun Gib.Companion.from(string: String) = from(CharStreams.fromString(string))
+
+/**
+ * Parses the GIB file located at the given [path] into [Gib].
+ *
+ * If the indicated file doesn't contain a valid GIB document, a [GibException.ParseError] will be thrown.
+ * @param path The path to the file to parse.
+ * @return A structured representation of the GIB file in form of [Gib]
+ * @throws [GibException.ParseError] if the file does not contain a valid GIB document.
+ */
 fun Gib.Companion.from(path: Path) = from(CharStreams.fromPath(path))
+
+/**
+ * Parses the given [inputStream] into [Gib].
+ *
+ * If the [inputStream] does not contain a valid GIB document, a [GibException.ParseError] will be thrown.
+ * @param inputStream The input stream containing the GIB document
+ * @return A structured representation of the GIB document in form of [Gib]
+ * @throws [GibException.ParseError] if the input stream doesn't contain a valid GIB document.
+ */
 fun Gib.Companion.from(inputStream: InputStream) = from(CharStreams.fromStream(inputStream))
 
 private fun Gib.Companion.from(charStream: CharStream): Gib {
@@ -77,13 +103,13 @@ private fun extractHeaderProperty(ctx: GibParser.Header_propertyContext): Pair<S
 }
 
 private fun Token.toInt(): Int = text.toIntOrNull()
-    ?: throw GibParseException("Expected an integer, but got $text", toMarker())
+    ?: throw GibException.ParseError("Expected an integer, but got $text", toMarker())
 
 private fun Token.toColor(): GibColor {
     return when (toInt()) {
         1 -> GibColor.Black
         2 -> GibColor.White
-        else -> throw GibParseException("Expected either '1' or '2' but got $text", toMarker())
+        else -> throw GibException.ParseError("Expected either '1' or '2' but got $text", toMarker())
     }
 }
 

@@ -1,7 +1,6 @@
 package com.github.ekenstein.gibson
 
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
+import java.time.LocalDateTime
 
 /**
  * A structured representation of a color in a GIB document.
@@ -104,20 +103,19 @@ data class Gib(val header: Map<String, String>, val game: List<GameProperty>) {
     }
 
     /**
-     * The date of the game, or null if there was no game date specified in the header.
+     * The date and time of the game, or null if there was no game date specified in the header.
      */
     val gameDate by lazy {
         header["GAMEDATE"]?.let { string ->
             string.split("-").takeIf { it.size == 6 }?.let { parts ->
-                OffsetDateTime.of(
+                LocalDateTime.of(
                     parts[0].trim().toInt(),
                     parts[1].trim().toInt(),
                     parts[2].trim().toInt(),
                     parts[3].trim().toInt(),
                     parts[4].trim().toInt(),
                     parts[5].trim().toInt(),
-                    0,
-                    ZoneOffset.UTC
+                    0
                 )
             }
         }

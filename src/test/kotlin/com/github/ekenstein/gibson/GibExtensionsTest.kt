@@ -3,9 +3,8 @@ package com.github.ekenstein.gibson
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.OffsetDateTime
-import java.time.ZoneOffset
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -120,19 +119,17 @@ class GibExtensionsTest {
             {
                 val gib = Gib(mapOf("GAMEDATE" to "2020- 8- 4-11- 7-47"), emptyList())
                 val actual = gib.gameDate
-                val expected = OffsetDateTime.of(
+                val expected = LocalDateTime.of(
                     LocalDate.of(2020, 8, 4),
-                    LocalTime.of(11, 7, 47),
-                    ZoneOffset.UTC
+                    LocalTime.of(11, 7, 47)
                 )
                 assertEquals(expected, actual)
             },
             {
                 val gib = Gib(mapOf("GAMEDATE" to "2020- 8-21-22-55- 3"), emptyList())
-                val expected = OffsetDateTime.of(
+                val expected = LocalDateTime.of(
                     LocalDate.of(2020, 8, 21),
-                    LocalTime.of(22, 55, 3),
-                    ZoneOffset.UTC
+                    LocalTime.of(22, 55, 3)
                 )
                 assertEquals(expected, gib.gameDate)
             }

@@ -33,20 +33,20 @@ fun main() {
     val gib = Gib.from(file)
 
     // get some information about the file such as the game place
-    val place = gib.gamePlace
+    val place: String? = gib.gamePlace
 
     // ... or komi
-    val komi = gib.komi
+    val komi: Double? = gib.komi
 
     // ... or the handicap used for the game
-    val handicap = gib.handicap
+    val handicap: Int = gib.handicap
 
     // ... or the name of the players
-    val playerBlack = gib.playerBlack
-    val playerWhite = gib.playerWhite
+    val playerBlack: String? = gib.playerBlack
+    val playerWhite: String? = gib.playerWhite
 
     // ... or the game result.
-    val gameResult = gib.gameResult
+    val gameResult: GameResult? = gib.gameResult
 
     // ... or maybe traverse the game tree
     gib.moves.map {

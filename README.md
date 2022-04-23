@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.Ekenstein:gibson:0.1.2")
+    implementation("com.github.Ekenstein:gibson:0.1.4")
 }
 ````
 ### 2. Obtain a GIB file from the Tygem Go Server
